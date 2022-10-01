@@ -73,14 +73,13 @@ def get_image_info(lon, lat, year):
     # Transpose the data and take the mean of each row
     data = np.mean(data.T, axis=1)
 
-    # Combine the wind speeds into one column
-    data = np.insert(data, 10, np.sqrt(data[8]**2 + data[9]**2), axis=0)
+    # Combine the wind speeds into one column and add temperature variation
+    data = np.insert(data, 10, np.sqrt(data[8]**2 + data[9]**2), axis=0) # wind speed
     header = np.insert(header, 10, 'wind_speed', axis=0)
 
-    # Add the maximum variation to the end of the data
-    data = np.insert(data, 11, max_variation, axis=0)
+    data = np.insert(data, 11, max_variation, axis=0) # temperature variation
     header = np.insert(header, 11, 'max_temp_variation', axis=0)
-    
+
     # Remove lat/lon, time, and wind components
     data = np.delete(data, [0, 1, 2, 8, 9], axis=0)
     header = np.delete(header, [0, 1, 2, 8, 9], axis=0)
@@ -88,8 +87,5 @@ def get_image_info(lon, lat, year):
     # Convert the data to a pandas dataframe
     df = pd.DataFrame(data=data, index=header).T
 
-    return display(df)
+    return df
 
-
-# get image
-get_image_info(135, 35, 1994)
