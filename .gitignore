@@ -1,3 +1,7 @@
+# custom
+venv_maishacks2022
+data
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
