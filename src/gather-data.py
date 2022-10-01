@@ -41,7 +41,7 @@ import geemap
 
 img_collection = ee.ImageCollection("ECMWF/ERA5_LAND/MONTHLY")
 
-def get_image_info(lat, lon, year):
+def get_image_info(lon, lat, year):
 
     # Filtering dates by northern and southern hemispheres
     if lat > 0: # northern hemisphere
@@ -52,7 +52,7 @@ def get_image_info(lat, lon, year):
         end_date = f'{year}-04-01'
 
     # Collection unique to the year
-    func_collection = img_collection.select('skin_temperature', 'dewpoint_temperature_2m', 'soil_temperature_level_1', 
+    func_collection = img_collection.select('skin_temperature', 'dewpoint_temperature_2m', 
                                             'volumetric_soil_water_layer_1', 'surface_pressure', 'total_precipitation', 
                                             'u_component_of_wind_10m', 'v_component_of_wind_10m').filterDate(start_date, end_date)
 
@@ -66,22 +66,30 @@ def get_image_info(lat, lon, year):
     header = data[0][1:]
     data = data[1:, 1:].astype(float)
 
+    # Store temperature data in a separate array and calculate maximum variation from mean
+    temp_data = data[:, 3]
+    max_variation = np.max( np.abs(temp_data - np.mean(temp_data)) )
+
     # Transpose the data and take the mean of each row
     data = np.mean(data.T, axis=1)
 
     # Combine the wind speeds into one column
-    data = np.insert(data, 11, np.sqrt(data[9]**2 + data[10]**2), axis=0)
-    header = np.insert(header, 11, 'wind_speed', axis=0)
+    data = np.insert(data, 10, np.sqrt(data[8]**2 + data[9]**2), axis=0)
+    header = np.insert(header, 10, 'wind_speed', axis=0)
 
+    # Add the maximum variation to the end of the data
+    data = np.insert(data, 11, max_variation, axis=0)
+    header = np.insert(header, 11, 'max_temp_variation', axis=0)
+    
     # Remove lat/lon, time, and wind components
-    data = np.delete(data, [0, 1, 2, 9, 10], axis=0)
-    header = np.delete(header, [0, 1, 2, 9, 10], axis=0)
+    data = np.delete(data, [0, 1, 2, 8, 9], axis=0)
+    header = np.delete(header, [0, 1, 2, 8, 9], axis=0)
 
     # Convert the data to a pandas dataframe
     df = pd.DataFrame(data=data, index=header).T
 
-    # Return means of each column 
-    return df
+    return display(df)
 
 
-
+# get image
+get_image_info(135, 35, 1994)
