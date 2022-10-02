@@ -5,7 +5,7 @@ import base64
 
 class YearDetector:
     def __init__(self):
-        self._client = boto3.client('rekognition')
+        self._client = boto3.client('rekognition', region_name="us-east-1")
 
     def detect(self, image):
         text = self._text_in_image(image)
