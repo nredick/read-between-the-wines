@@ -2,12 +2,14 @@ import geocoder
 import numpy as np
 import pandas as pd
 import ee  # earth engine api
+import json
 
 
 class Encoder:
     def __init__(self):
-        service_account = 'service_account'
-        credentials = ee.ServiceAccountCredentials(service_account, 'key.json')
+        with open("ee.json") as file:
+            credentials = json.load(file)
+        credentials = ee.ServiceAccountCredentials(credentials['service_account'], credentials['key_path'])
         ee.Initialize(credentials)
         self._image_collection = ee.ImageCollection("ECMWF/ERA5_LAND/MONTHLY")
 
