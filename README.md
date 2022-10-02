@@ -1,5 +1,7 @@
 <!-- badges  -->
 
+[![Logo of cute grape](https://i.imgur.com/lqJW45H.png)](https://i.imgur.com/lqJW45H.png)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Read Between The Wines 🍷
