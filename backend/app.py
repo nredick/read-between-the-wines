@@ -2,6 +2,7 @@ import flask
 import model
 import encoder
 import year_detector
+import chart
 
 
 app = flask.Flask(__name__)
@@ -35,6 +36,12 @@ def wine_year_by_image():
     image = input_json['image']
     year = detector.detect(image)
     return year
+
+
+@app.route('/maps', methods=["POST"])
+def maps():
+    res = chart.bokeh()
+    return res
 
 
 def run():
