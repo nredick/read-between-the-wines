@@ -52,6 +52,7 @@ unique_locs = wine['location'].unique()
 def get_coords(location):
     try:
         lat, long = geocoder.arcgis(location, maxRows=1).latlng
+        print(f'{location} -> {lat}/{long}')
         return lat, long
     except:
         return np.nan, np.nan
@@ -86,5 +87,5 @@ wine.head(5)
 
 
 # %%
-wine.to_csv("wine.csv", header=0, index=False)
+# wine.to_csv("wine.csv", header=0, index=False)
 
