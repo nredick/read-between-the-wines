@@ -36,6 +36,9 @@ class Encoder:
         data, header = self._construct_features(data, header)
         data_frame = self._convert_to_data_frame(data, header)
 
+        data_frame.insert(0, 'lon', lon)
+        data_frame.insert(0, 'lat', lat)
+
         return data_frame
 
     def _convert_to_data_frame(self, data, header):
