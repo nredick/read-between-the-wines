@@ -5,14 +5,14 @@ import year_detector
 
 
 app = flask.Flask(__name__)
-_model = model.Model("../models/wine-model.joblib")
+_model = model.Model("../models/wine_model.pkl")
 _encoder = encoder.Encoder()
 detector = year_detector.YearDetector()
 
 
 @app.route('/')
 def base():
-    return flask.render_template('../frontend/main.html')
+    return flask.render_template('main.html')
 
 
 @app.route('/wine', methods=["GET"])
