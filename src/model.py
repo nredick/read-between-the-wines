@@ -67,7 +67,7 @@ pp_pipe = Pipeline(
         ("norm", pp.Normalizer()),
         # ("features", PolynomialFeatures()),
         ("scale", pp.RobustScaler()), 
-        ("selector", VarianceThreshold(threshold=(.8 * (1 - .8)))),  # rm features with low variance
+        # ("selector", VarianceThreshold(threshold=(.8 * (1 - .8)))),  # rm features with low variance
     ]
 )
 
