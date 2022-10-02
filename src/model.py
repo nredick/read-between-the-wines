@@ -54,6 +54,9 @@ y = wine.drop(wine.columns.difference(["points", "price"]), axis=1)
 
 
 # %%
+wine.describe()
+
+# %%
 X.head()
 
 
@@ -161,8 +164,9 @@ model.fit(
 # %%
 metrics = pd.DataFrame(model.evaluate(X_test, y_test, batch_size=BATCH_SIZE), index=model.metrics_names).T
 
-# print(X_test[0].reshape(1, -1))
-# print(model.predict(X_test[0].reshape(1, -1)))
+# print(X_test[0])
+# print(X_test[:50])
+print(model.predict(X_test[:50]))
 
 metrics
 
