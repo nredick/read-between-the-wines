@@ -20,8 +20,6 @@
 
 # %%
 import ee # import the earth engine api 
-import datetime
-import folium
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -36,9 +34,6 @@ import re
 # authenticate & init google earth engine
 ee.Authenticate()
 ee.Initialize()
-
-# %%
-import geemap
 
 img_collection = ee.ImageCollection("ECMWF/ERA5_LAND/MONTHLY")
 
