@@ -15,44 +15,29 @@
 # ---
 
 # %%
-import pandas as pd
-
-# ML imports
-from sklearn.pipeline import Pipeline
-from sklearn.ensemble import *
-from sklearn import preprocessing as pp
-from sklearn.feature_selection import VarianceThreshold
-from sklearn.model_selection import train_test_split
-
-# for saving the model
-from joblib import dump, load
-
-from sklearn.neighbors import KNeighborsRegressor
-from sklearn.linear_model import Lasso
-from sklearn.linear_model import ElasticNet
-from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import RidgeCV
-
-from sklearn.ensemble import ExtraTreesRegressor
-from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.ensemble import AdaBoostRegressor
-
-from sklearn.neural_network import MLPRegressor
-
-from sklearn.tree import DecisionTreeRegressor
-
-from sklearn.multioutput import MultiOutputRegressor
-
-from keras.models import Sequential
-from keras.layers import Dense
-from sklearn.preprocessing import *
-import tensorflow as tf
+import os.path as osp
 
 import keras
-
-
-import os.path as osp
+import pandas as pd
+import tensorflow as tf
+# for saving the model
+from joblib import dump, load
+from keras.layers import Dense
+from keras.models import Sequential
+from sklearn import preprocessing as pp
+from sklearn.ensemble import *
+from sklearn.ensemble import (AdaBoostRegressor, ExtraTreesRegressor,
+                              GradientBoostingRegressor, RandomForestRegressor)
+from sklearn.feature_selection import VarianceThreshold
+from sklearn.linear_model import ElasticNet, Lasso, LinearRegression, RidgeCV
+from sklearn.model_selection import train_test_split
+from sklearn.multioutput import MultiOutputRegressor
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.neural_network import MLPRegressor
+# ML imports
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import *
+from sklearn.tree import DecisionTreeRegressor
 
 
 # %%
@@ -69,7 +54,7 @@ wine = pd.read_csv("../data/wine_processed.csv", header=0)
 wine.dropna(inplace=True, axis=0, how="any")
 
 # get the features
-X = wine.drop(["points", "price", "title", "location"], axis=1)
+X = wine.drop(["points", "price", "title", "location", "lat", "lon", "year"], axis=1)
 # get the targets (points, price)
 y = wine.drop(wine.columns.difference(["points", "price"]), axis=1)
 
@@ -87,9 +72,10 @@ X_norm = pp.normalize(X)
 
 pp_pipe = Pipeline(
     [
-        ("norm", Normalizer()),  
-        ("scale", StandardScaler()), 
-        ("selector", VarianceThreshold(threshold=(.8 * (1 - .8)))),  # rm features with low variance
+        ("norm", Normalizer()),
+        # ("features", PolynomialFeatures()),
+        ("scale", RobustScaler()), 
+        # ("selector", VarianceThreshold(threshold=(.5 * (1 - .8)))),  # rm features with low variance
     ]
 )
 
@@ -103,7 +89,7 @@ X_norm = pp_pipe.fit_transform(X)
 # %%
 # split data into training and test sets
 X_train, X_test, y_train, y_test = train_test_split(
-    X_norm, y, test_size=0.3, random_state=seed
+    X_norm, y, test_size=0.2, random_state=seed
 )
 
 
@@ -112,23 +98,34 @@ X_train, X_test, y_train, y_test = train_test_split(
 #
 
 # %%
+BATCH_SIZE = 128
+
+# %%
+from tensorflow.keras import layers
+
 # build the model
 def init_model(n_inputs, n_outputs, name="wine_model"):
-    model = Sequential(name=name) # create a sequential model
+    model = Sequential(name=name)  # create a sequential model
 
     # input layer
     model.add(Dense(64, input_dim=n_inputs, activation="relu"))
 
     # hidden layers
     model.add(Dense(128, activation="relu"))
-    model.add(Dense(128, activation="relu"))
+    model.add(layers.Dropout(.5, input_shape=(2,)))
+    model.add(Dense(256, activation="relu"))
+    model.add(layers.Dropout(.5, input_shape=(2,)))
     model.add(Dense(128, activation="relu"))
 
     # output layer
     model.add(Dense(n_outputs, activation="linear"))
 
-    # compile the model 
-    model.compile(loss="mae", optimizer=tf.keras.optimizers.Adam(lr=0.01, amsgrad=True),  metrics=['mean_absolute_error', 'mean_squared_error', 'accuracy'])
+    # compile the model
+    model.compile(
+        loss=tf.keras.losses.MeanSquaredLogarithmicError(),
+        optimizer=tf.keras.optimizers.Nadam(),
+        metrics=['accuracy'],
+    )
 
     return model
 
@@ -144,21 +141,34 @@ history = tf.keras.callbacks.History()
 
 callbacks = [
     checkpoint,
-    tf.keras.callbacks.EarlyStopping(patience=3, monitor="loss", mode="auto"),
+    tf.keras.callbacks.EarlyStopping(patience=3, monitor="val_loss", mode="auto"),
     tf.keras.callbacks.TensorBoard(log_dir=osp.join("..", "logs")),
     history,
 ]
 
 
-n_inputs, n_outputs = X.shape[1], y.shape[1]
+n_inputs, n_outputs = X_train.shape[1], y_train.shape[1]
 model = init_model(n_inputs, n_outputs)
 
 model.summary()
 
 # %%
+model.fit(
+    X_train,
+    y_train,
+    callbacks=callbacks,
+    epochs=100,
+    verbose=1,
+    batch_size=BATCH_SIZE,
+    steps_per_epoch=250,
+    validation_split=0.2,
+)
 
-model.fit(X_train, y_train, callbacks=callbacks, epochs=100, verbose=2, batch_size=128)
 
+# %%
+metrics = pd.DataFrame(model.evaluate(X_test, y_test, batch_size=BATCH_SIZE), index=model.metrics_names).T
+
+metrics
 
 # %%
 import joblib
