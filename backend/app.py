@@ -15,7 +15,7 @@ def base():
     return flask.render_template('../frontend/main.html')
 
 
-@app.route('/wine', methods=["POST"])
+@app.route('/wine', methods=["GET"])
 def wine():
     year, location = flask.request.args.get('year'), flask.request.args.get('location')
     if year is None or location is None:
@@ -26,7 +26,7 @@ def wine():
     return flask.jsonify(response)
 
 
-@app.route('/wine_year_by_image', methods=["POST"])
+@app.route('/wine_year_by_image', methods=["GET"])
 def wine_year_by_image():
     input_json = flask.request.get_json(force=True)
     image = input_json['image']
