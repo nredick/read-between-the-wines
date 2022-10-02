@@ -3,6 +3,7 @@ venv_maishacks2022
 data/winemag*
 src/data
 src/*ipynb
+.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

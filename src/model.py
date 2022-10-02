@@ -15,33 +15,60 @@
 # ---
 
 # %%
-# mlp for multi-output regression
-from numpy import mean
-from numpy import std
-from sklearn.datasets import make_regression
-from sklearn.model_selection import RepeatedKFold, train_test_split
-from keras.models import Sequential
-from keras.layers import Dense
 import pandas as pd
+
+# ML imports
+from sklearn.pipeline import Pipeline
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.preprocessing import StandardScaler
+from sklearn.feature_selection.VarianceThreshold import VarianceThreshold
+
+
+# %%
+seed = 6
+
 
 # %% [markdown]
 # # Load data
 #
-# ## Train/test split 
 
 # %%
-wine = pd.read_csv('../data/wine.csv', header=0)
-# get the features 
-X = wine.drop(['points','price','title'], axis=1)
+wine = pd.read_csv("../data/wine.csv", header=0)
+# get the features
+X = wine.drop(["points", "price", "title"], axis=1)
 # get the targets (points, price)
-y = wine.drop(wine.columns.difference(['points', 'price']), axis=1)
+y = wine.drop(wine.columns.difference(["points", "price"]), axis=1)
+
+
+# %% [markdown]
+# ## Train/test split
+#
 
 # %%
-
 # split data into training and test sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=seed
+)
 
-# evaluate model
-results = evaluate_model(X, y)
-# summarize performance
-print('MAE: %.3f (%.3f)' % (mean(results), std(results)))
+
+# %% [markdown]
+# # Build model
+#
+
+# %%
+# build a pipeline for the data processing & model architecture
+pipe = Pipeline(
+    [
+        ("scaler", StandardScaler()),  # normalize data
+        ("selector", VarianceThreshold()),  # rm features with low variance
+        ("randomforestregressor", RandomForestRegressor(random_state=seed, max_depth=5, n_estimators=50)),
+    ]
+)  # model
+
+pipe.fit(X_train, y_train)  # fit the model to the data
+
+
+# %%
+print("Training set score: " + str(pipe.score(X_train, y_train)))
+print("Test set score: " + str(pipe.score(X_test, y_test)))
+
