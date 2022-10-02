@@ -1,4 +1,6 @@
 import joblib
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import Normalizer, RobustScaler
 
 
 class Model:
@@ -7,5 +9,14 @@ class Model:
             self._model = joblib.load(file)
 
     def run(self, input):
-        result = self._model.predict(input)
+        normalised_input = self._normalise(input)
+        result = self._model.predict(normalised_input)
         return result
+
+    def _normalise(self, input):
+        pp_pipe = Pipeline([
+            ("norm", Normalizer()),
+            ("scale", RobustScaler())
+        ])
+        normalised = pp_pipe.fit_transform(input)
+        return normalised
