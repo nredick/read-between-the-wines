@@ -17,7 +17,7 @@ def base():
 
 @app.route('/wine', methods=["POST"])
 def wine():
-    year, location = flask.args.get('year'), flask.args.get('location')
+    year, location = flask.request.args.get('year'), flask.request.args.get('location')
     if year is None or location is None:
         return 'Missing parameters', 400
     data_frame = _encoder.encode_features(year, location)
