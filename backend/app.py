@@ -51,7 +51,7 @@ def maps():
 
 
 def run():
-    app.run(host='0.0.0.0', port=8888, ssl_context='adhoc')
+    app.run(host='0.0.0.0', port=8888)
 
 
 run()
