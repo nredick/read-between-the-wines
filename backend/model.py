@@ -1,10 +1,11 @@
+import joblib
 
 
 class Model:
     def __init__(self, path):
-        self._model = path  # Load model here
+        with open(path, 'rb') as file:
+            self._model = joblib.load(file)
 
     def run(self, input):
-        # result = self._model.process(input)
-        result = f"No results yet :(\nRequest is: {input}"
+        result = self._model.predict(input)
         return result

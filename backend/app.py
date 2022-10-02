@@ -4,7 +4,7 @@ import year_detector
 
 
 app = flask.Flask(__name__)
-_model = model.Model("/some/path")  # path to the model
+_model = model.Model("/some/path")
 
 
 @app.route('/')
