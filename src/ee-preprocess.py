@@ -25,6 +25,7 @@ import folium
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import re
 
 # %% [markdown]
 # ## Retrieve the data
@@ -88,4 +89,43 @@ def get_image_info(lon, lat, year):
     df = pd.DataFrame(data=data, index=header).T
 
     return df
+
+
+# %%
+# Import csv of wine data
+wine_data = pd.read_csv('../data/wine.csv')
+
+# Sample 33% of the data
+wine_data = wine_data.sample(frac=0.33)
+
+def extract_year(x):
+    try:
+        y = int( (re.findall("[1-3][0-9]{3}", x))[0]) 
+    except:
+        y = np.nan
+    return y
+
+# Extract years from wine data and convert to int
+wine_data['year'] = wine_data['title'].apply(extract_year)
+
+# Drop rows with no year
+wine_data = wine_data.dropna(subset=['year'])
+
+# Drop rows with years outside of 1980-2017 and no lat/lon
+wine_data = wine_data[(wine_data['year'] >= 1981) & (wine_data['year'] <= 2021) & (wine_data['lat'].notna()) & (wine_data['lon'].notna())]
+
+# Convert years to int
+wine_data['year'] = wine_data['year'].astype(int)
+
+# Extract EE data for each row and add as new columns in the dataframe
+for index, row in wine_data.iterrows():
+    df = get_image_info(row['lon'], row['lat'], row['year'])
+    for col in df.columns:
+        wine_data.loc[index, col] = df[col][0]
+        
+    print(f'Finished row {index}')
+
+# Save dataframe to csv
+wine_data.to_csv('../data/wine_processed.csv', index=False)
+
 
