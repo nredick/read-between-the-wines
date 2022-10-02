@@ -48,8 +48,16 @@ def wine():
     except:
         return "Geoprocessing failed, ensure your location exists and isn't in the water!", 400
     result = _model.run(data_frame)
-    response = {'text': result}
-    return jsonify(response)
+
+    print(result, type(result))
+    # response = {'text': result}
+    # return jsonify(response)
+
+    q = f"The predicted quality of the wine is {result[0][0]:.2f}/100"
+    p = f"The predicted price of the wine is ${result[0][1]:.2f}"
+    
+    return render_template('main.html', quality=q, price=p)
+    
 
 
 # %%
