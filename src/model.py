@@ -21,7 +21,11 @@ import pandas as pd
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import StandardScaler
-from sklearn.feature_selection.VarianceThreshold import VarianceThreshold
+from sklearn.feature_selection import VarianceThreshold
+from sklearn.model_selection import train_test_split
+
+# for saving the model
+from joblib import dump, load
 
 
 # %%
@@ -34,11 +38,21 @@ seed = 6
 
 # %%
 wine = pd.read_csv("../data/wine.csv", header=0)
+
+wine.dropna(inplace=True, axis=0, how="any")
+
 # get the features
-X = wine.drop(["points", "price", "title"], axis=1)
+X = wine.drop(["points", "price", "title", "location"], axis=1)
 # get the targets (points, price)
 y = wine.drop(wine.columns.difference(["points", "price"]), axis=1)
 
+
+# %%
+X.head()
+
+# %%
+
+y.head()
 
 # %% [markdown]
 # ## Train/test split
@@ -61,9 +75,12 @@ pipe = Pipeline(
     [
         ("scaler", StandardScaler()),  # normalize data
         ("selector", VarianceThreshold()),  # rm features with low variance
-        ("randomforestregressor", RandomForestRegressor(random_state=seed, max_depth=5, n_estimators=50)),
+        (
+            "randomforestregressor",
+            RandomForestRegressor(random_state=seed, max_depth=25, n_estimators=100),
+        )  # model
     ]
-)  # model
+)
 
 pipe.fit(X_train, y_train)  # fit the model to the data
 
@@ -72,3 +89,7 @@ pipe.fit(X_train, y_train)  # fit the model to the data
 print("Training set score: " + str(pipe.score(X_train, y_train)))
 print("Test set score: " + str(pipe.score(X_test, y_test)))
 
+
+# %%
+# save the model
+dump(pipe, '../models/wine-model.joblib') 
