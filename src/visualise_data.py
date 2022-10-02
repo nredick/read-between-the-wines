@@ -1,7 +1,7 @@
 # Imports
 import pandas as pd
 import numpy as np
-from bokeh.plotting import ColumnDataSource, figure, output_file, show, gmap
+from bokeh.plotting import ColumnDataSource, figure, output_file, show, gmap, save
 from bokeh.models import ColumnDataSource, HoverTool, CategoricalColorMapper, Slider, Select
 from bokeh.tile_providers import CARTODBPOSITRON, get_provider
 import os
@@ -14,47 +14,50 @@ from pyproj import Proj, transform
 # Read in data into numpy array
 df = pd.read_csv('../data/wine_processed.csv', header=0)
 
-# Convert points and prices to numpy arrays
-points= df['points'].to_numpy()
-prices = df['price'].to_numpy()
+def graph_quality_vs_price(user_quality, user_price, df):
+    # Convert points and prices to numpy arrays
+    points= df['points'].to_numpy()
+    prices = df['price'].to_numpy()
 
-# Calculate mean of prices at each quality value
-mean_price = []
-for quality in np.unique(points):
-    # All indices at some price "quality"
-    indices = np.asarray(points == quality).nonzero()[0]
-    
-    # Take mean of prices (at values that correspond to quality)
-    mean_price.append(np.mean(prices[indices]))
+    # Calculate mean of prices at each quality value
+    mean_price = []
+    for quality in np.unique(points):
+        # All indices at some price "quality"
+        indices = np.asarray(points == quality).nonzero()[0]
+        
+        # Take mean of prices (at values that correspond to quality)
+        mean_price.append(np.mean(prices[indices]))
 
-output_file("toolbar.html")
+    output_file("quality_price_graph.html")
 
-# Set dataframe as source for bokeh
-source = ColumnDataSource(data=dict(
-    Points=df['points'],
-    Price=df['price'],
-    Variety=df['title'],
-    Winery=df['location'],
-    Year=df['year']
-))
+    # Set dataframe as source for bokeh
+    source = ColumnDataSource(data=dict(
+        Points=df['points'],
+        Price=df['price'],
+        Variety=df['title'],
+        Winery=df['location'],
+        Year=df['year']
+    ))
 
-TOOLTIPS = [
-    ('Points', '@Points'),
-    ('Price', '@Price'),
-    ('Variety', '@Variety'),
-    ('Winery', '@Winery'),
-    ('Year', '@Year')
-]
+    TOOLTIPS = [
+        ('Points', '@Points'),
+        ('Price', '@Price'),
+        ('Variety', '@Variety'),
+        ('Winery', '@Winery'),
+        ('Year', '@Year')
+    ]
 
-p = figure(plot_width=500, plot_height=500, title='Wine Data', tooltips=TOOLTIPS, x_range=(0, 1000), y_range=(80, 103))
+    p = figure(plot_width=500, plot_height=500, title='Wine Data', tooltips=TOOLTIPS, x_range=(0, 1000), y_range=(80, 103))
 
-p.circle(x='Price', y='Points', source=source, size=4, color='red', alpha=0.5)
-p.circle(x=mean_price, y=np.unique(points), size=7, color='blue', alpha=1)
-p.line(x=mean_price, y=np.unique(points), line_width=3, color='blue', alpha=1)
+    p.circle(x='Price', y='Points', source=source, size=4, color='red', alpha=0.5)
+    p.circle(x=mean_price, y=np.unique(points), size=7, color='blue', alpha=1)
+    p.circle(x=user_price, y=user_quality, size=15, color='green', alpha=1)
+    p.line(x=mean_price, y=np.unique(points), line_width=3, color='blue', alpha=1)
 
-p.xaxis.axis_label = 'Price in USD'
-p.yaxis.axis_label = 'Quality (out of 100)'
-show(p)
+    p.xaxis.axis_label = 'Price in USD'
+    p.yaxis.axis_label = 'Quality (out of 100)'
+    show(p)
+
 
 # -
 
@@ -123,11 +126,10 @@ def map_wineries(user_lat, user_lon, df):
         name, distance, lat, lon, quality, price = vinyard[0], vinyard[1], vinyard[2], vinyard[3], vinyard[4], vinyard[5]
 
         # Append to lists
-        if not name in wineries : wineries.append(name)
-        if not distance in distances : distances.append(distance)
+        if not name in wineries : wineries.append(name), distances.append(distance)
         if not lat in lats : lats.append(lat), prices.append(price)
         if not lon in lons : lons.append(lon), qualities.append(quality)
-
+        
     # Projection in/out
     inproj = Proj(init='epsg:4326')
     outproj = Proj(init='epsg:3857')
@@ -136,9 +138,9 @@ def map_wineries(user_lat, user_lon, df):
     x, y = transform(inproj, outproj, lons, lats)
     user_x, user_y = transform(inproj, outproj, user_lon, user_lat)
 
-    output_file("tile.html")
-
     tile_provider = get_provider(CARTODBPOSITRON)
+
+    output_file("surrounding_wineries.html")
 
     source = ColumnDataSource(
         data=dict(lat=y,
@@ -165,6 +167,6 @@ def map_wineries(user_lat, user_lon, df):
     p.circle(x="lon", y="lat", size=15, fill_color="blue", fill_alpha=0.8, source=source)
     p.circle(x=user_x, y=user_y, size=15, fill_color="red", fill_alpha=1)
 
-    show(p)
+    save(p)
 
 map_wineries(45, -100, df)
