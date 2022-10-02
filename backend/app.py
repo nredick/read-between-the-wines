@@ -38,7 +38,7 @@ def wine_year_by_image():
     return year
 
 
-@app.route('/maps', methods=["POST"])
+@app.route('/maps', methods=["GET"])
 def maps():
     location = flask.request.args.get('location')
     if location is None:
