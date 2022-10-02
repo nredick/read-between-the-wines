@@ -20,7 +20,10 @@ def wine():
     year, location = flask.request.args.get('year'), flask.request.args.get('location')
     if year is None or location is None:
         return 'Missing parameters', 400
-    data_frame = _encoder.encode_features(year, location)
+    try:
+        data_frame = _encoder.encode_features(year, location)
+    except:
+        return "Geoprocessing failed, ensure your location exists and isn't in the water!", 400
     result = _model.run(data_frame)
     response = {'text': result}
     return flask.jsonify(response)
