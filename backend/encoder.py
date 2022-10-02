@@ -6,7 +6,9 @@ import ee  # earth engine api
 
 class Encoder:
     def __init__(self):
-        ee.Authenticate()
+        service_account = 'service_account'
+        credentials = ee.ServiceAccountCredentials(service_account, 'key.json')
+        ee.Initialize(credentials)
         ee.Initialize()
         self._image_collection = ee.ImageCollection("ECMWF/ERA5_LAND/MONTHLY")
 
