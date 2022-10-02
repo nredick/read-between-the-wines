@@ -4,7 +4,8 @@ data/winemag*
 src/data
 src/*ipynb
 .vscode
-models
+models/
+logs
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
