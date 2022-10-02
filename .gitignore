@@ -1,6 +1,10 @@
 # custom
 venv_maishacks2022
-data
+data/winemag*
+src/data
+src/*ipynb
+.vscode
+models
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
