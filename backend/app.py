@@ -5,26 +5,28 @@ import year_detector
 
 
 app = flask.Flask(__name__)
-_model = model.Model("/models/wine-model.joblib")
+_model = model.Model("../models/wine-model.joblib")
 _encoder = encoder.Encoder()
 detector = year_detector.YearDetector()
 
 
 @app.route('/')
 def base():
-    return 'Please specify API'
+    return flask.render_template('../frontend/main.html')
 
 
-@app.route('/api/wine', methods=["POST"])
+@app.route('/wine', methods=["POST"])
 def wine():
-    input_json = flask.request.get_json(force=True)
-    data_frame = _encoder.encode_features(input_json['year'], input_json['location'])
+    year, location = flask.args.get('year'), flask.args.get('location')
+    if year is None or location is None:
+        return 'Missing parameters', 400
+    data_frame = _encoder.encode_features(year, location)
     result = _model.run(data_frame)
     response = {'text': result}
     return flask.jsonify(response)
 
 
-@app.route('/api/wine_year_by_image', methods=["POST"])
+@app.route('/wine_year_by_image', methods=["POST"])
 def wine_year_by_image():
     input_json = flask.request.get_json(force=True)
     image = input_json['image']
