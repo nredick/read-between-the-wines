@@ -40,8 +40,14 @@ def wine_year_by_image():
 
 @app.route('/maps', methods=["POST"])
 def maps():
-    res = chart.bokeh()
-    return res
+    location = flask.request.args.get('location')
+    if location is None:
+        return 'Missing parameters', 400
+    dataframe = chart.full_data_frame()
+    latitude, longitude = _encoder.geoencode(location)
+    plot = chart.map_wineries(latitude, longitude, dataframe)
+    html = chart.plot_html(plot)
+    return html
 
 
 def run():

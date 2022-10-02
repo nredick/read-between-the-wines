@@ -12,13 +12,13 @@ class Encoder:
         self._image_collection = ee.ImageCollection("ECMWF/ERA5_LAND/MONTHLY")
 
     def encode_features(self, year, location):
-        latitude, longitude = self._geoencode(location)
+        latitude, longitude = self.geoencode(location)
         if latitude is np.nan or longitude is np.nan:
             return None
         data_frame = self._get_image_info(longitude, latitude, year)
         return data_frame
 
-    def _geoencode(self, location):
+    def geoencode(self, location):
         try:
             lat, long = geocoder.arcgis(location, maxRows=1).latlng
             return lat, long
