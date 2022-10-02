@@ -15,7 +15,7 @@ def base():
     return 'Please specify API'
 
 
-@app.route('/api/wine', methods=["POST", "GET"])
+@app.route('/api/wine', methods=["POST"])
 def wine():
     input_json = flask.request.get_json(force=True)
     data_frame = _encoder.encode_features(input_json['year'], input_json['location'])
