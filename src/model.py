@@ -19,7 +19,7 @@ import pandas as pd
 
 # ML imports
 from sklearn.pipeline import Pipeline
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import *
 from sklearn.preprocessing import StandardScaler
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.model_selection import train_test_split
@@ -37,7 +37,7 @@ seed = 6
 #
 
 # %%
-wine = pd.read_csv("../data/wine.csv", header=0)
+wine = pd.read_csv("../data/wine_processed.csv", header=0)
 
 wine.dropna(inplace=True, axis=0, how="any")
 
@@ -70,26 +70,68 @@ X_train, X_test, y_train, y_test = train_test_split(
 #
 
 # %%
-# build a pipeline for the data processing & model architecture
-pipe = Pipeline(
-    [
-        ("scaler", StandardScaler()),  # normalize data
-        ("selector", VarianceThreshold()),  # rm features with low variance
-        (
-            "randomforestregressor",
-            RandomForestRegressor(random_state=seed, max_depth=25, n_estimators=100),
-        )  # model
-    ]
-)
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.linear_model import Lasso
+from sklearn.linear_model import ElasticNet
+from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import RidgeCV
 
-pipe.fit(X_train, y_train)  # fit the model to the data
+from sklearn.ensemble import ExtraTreesRegressor
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import AdaBoostRegressor
+
+from sklearn.tree import DecisionTreeRegressor
+
+from sklearn.multioutput import MultiOutputRegressor
+
+from keras.models import Sequential
+from keras.layers import Dense
+from sklearn.preprocessing import *
+import tensorflow as tf
 
 
 # %%
-print("Training set score: " + str(pipe.score(X_train, y_train)))
-print("Test set score: " + str(pipe.score(X_test, y_test)))
+# build the model
+def init_model(n_inputs, n_outputs):
+    model = Sequential()
+    model.add(
+        Dense(
+            20, input_dim=n_inputs, kernel_initializer="normal", activation="relu"
+        )
+    )
+    model.add(Dense(n_outputs, kernel_initializer="normal"))
+    model.compile(loss="mae", optimizer="adam")
+    return model
 
+
+# %%
+callbacks = tf.keras.callbacks.EarlyStopping(
+    monitor='val_loss',
+    min_delta=0,
+    patience=3,
+    verbose=2,
+    mode='auto',
+)
+
+n_inputs, n_outputs = X.shape[1], y.shape[1]
+model = init_model(n_inputs, n_outputs)
+# pipe = Pipeline(
+#     [
+#         ("norm", Normalizer()),  # normalize data
+#         ("scale", RobustScaler()),  # normalize data
+#         # ("selector", VarianceThreshold()),  # rm features with low variance
+#         ("nn", init_model(n_inputs, n_outputs)),  # model
+#     ]
+# )
+
+model.fit(X_train, y_train, callbacks=callbacks, epochs=10, verbose=2)
+
+
+# %%
+# print("Training set score: " + str(pipe.score(X_train, y_train)))
+# print("Test set score: " + str(pipe.score(X_test, y_test)))
 
 # %%
 # save the model
-dump(pipe, '../models/wine-model.joblib') 
+dump(model, '../models/wine-model.joblib') 
