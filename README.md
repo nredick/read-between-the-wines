@@ -79,6 +79,16 @@ Validation data for training was randomly sampled from the training set (20%).
 *Everything!*
 ### How'd the model do? 📊
 
+<!-- ![Model Accuracy](refs/epoch_accuracy.svg)
+![Model Loss](refs/epoch_loss.svg) -->
+
+Accuracy & Loss 
+
+<img src="refs/epoch_accuracy.svg" alt="acc" width="300"/>
+<img src="refs/epoch_loss.svg" alt="loss" width="300"/>
+
+Check out the interactive training & valiation metric plots on [Tensorboard](https://tensorboard.dev/experiment/kQRWX8RoROKEzNfro4EYMg/#scalars).
+
 | Metric | Value |
 | --- | --- |
 | Test Loss | 0.171474 |
