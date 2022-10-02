@@ -75,6 +75,7 @@ class Encoder:
         return func_collection
 
     def _dates_by_hemisphere(self, lat, year):
+        year = int(year)
         if lat > 0:  # northern hemisphere
             start_date = f'{year}-04-01'
             end_date = f'{year}-10-31'
