@@ -1,9 +1,10 @@
+#!/usr/bin/env python
+# coding: utf-8
 # ---
 # jupyter:
 #   jupytext:
 #     cell_metadata_filter: -all
 #     custom_cell_magics: kql
-#     formats: py:percent
 #     text_representation:
 #       extension: .py
 #       format_name: percent
@@ -23,6 +24,7 @@ import numpy as np
 import pandas as pd
 import geocoder
 
+
 # %%
 path = "../data/winemag-data-130k-v2.csv"
 wine = pd.read_csv(path)
@@ -40,6 +42,12 @@ wine = wine.drop(wine.columns.difference(['points', 'price', 'title', 'location'
 
 
 # %%
+
+
+unique_locs = wine['location'].unique()
+
+
+# %%
 # define a function to get coordinates from location
 def get_coords(location):
     try:
@@ -49,16 +57,34 @@ def get_coords(location):
         return np.nan, np.nan
     
 
-# wine['lat'], wine['lon'] = wine.apply(lambda x: get_coords(x['location']), axis=1)
+wine['lat'], wine['lon'] = wine.apply(lambda x: get_coords(x['location']), axis=1)
 
-latlon_df = wine.apply(lambda row: get_coords(row['location']), axis='columns', result_type='expand')
-latlon_df.columns = ['lat', 'lon']
+latlon = pd.Series(unique_locs).map(get_coords)
+latlon = pd.DataFrame(list(latlon), columns=['lat', 'lon'])
 
-latlon_df
-
-# %%
-wine
 
 # %%
-# stats
-wine.describe()
+unique_locs = pd.Series(unique_locs)
+latlon_list = latlon.values.tolist()
+
+
+# %%
+def get_latlon(row, get='lat'):
+    loc = row.T.location
+    index = unique_locs.index[unique_locs == loc].tolist()[0]
+    lat, lon = latlon_list[index]
+    
+    if get == 'lat':
+        return lat
+    else:
+        return lon
+
+wine['lat'] = wine.apply(lambda x: get_latlon(x), axis=1)
+wine['lon'] = wine.apply(lambda x: get_latlon(x, get='lon'), axis=1)
+
+wine.head(5)    
+
+
+# %%
+wine.to_csv("wine.csv", header=0, index=False)
+
