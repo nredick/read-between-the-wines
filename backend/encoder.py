@@ -9,14 +9,13 @@ class Encoder:
         service_account = 'service_account'
         credentials = ee.ServiceAccountCredentials(service_account, 'key.json')
         ee.Initialize(credentials)
-        ee.Initialize()
         self._image_collection = ee.ImageCollection("ECMWF/ERA5_LAND/MONTHLY")
 
     def encode_features(self, year, location):
         latitude, longitude = self._geoencode(location)
         if latitude is np.nan or longitude is np.nan:
             return None
-        data_frame = self._get_image_info(latitude, longitude, year)
+        data_frame = self._get_image_info(longitude, latitude, year)
         return data_frame
 
     def _geoencode(self, location):
