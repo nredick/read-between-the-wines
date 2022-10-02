@@ -33,7 +33,7 @@ def wine_year_by_image():
 
 
 def run():
-    app.run(port=8888, ssl_context='adhoc')
+    app.run(host='0.0.0.0', port=8888, ssl_context='adhoc')
 
 
 run()
