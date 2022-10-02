@@ -6,15 +6,16 @@ import ee  # earth engine api
 
 class Encoder:
     def __init__(self):
-        ee.Authenticate()
-        ee.Initialize()
+        service_account = 'service_account'
+        credentials = ee.ServiceAccountCredentials(service_account, 'key.json')
+        ee.Initialize(credentials)
         self._image_collection = ee.ImageCollection("ECMWF/ERA5_LAND/MONTHLY")
 
     def encode_features(self, year, location):
         latitude, longitude = self._geoencode(location)
         if latitude is np.nan or longitude is np.nan:
             return None
-        data_frame = self._get_image_info(latitude, longitude, year)
+        data_frame = self._get_image_info(longitude, latitude, year)
         return data_frame
 
     def _geoencode(self, location):
@@ -74,6 +75,7 @@ class Encoder:
         return func_collection
 
     def _dates_by_hemisphere(self, lat, year):
+        year = int(year)
         if lat > 0:  # northern hemisphere
             start_date = f'{year}-04-01'
             end_date = f'{year}-10-31'
