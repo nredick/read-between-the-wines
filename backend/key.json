@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "tidy-reporter-364307",
+  "private_key_id": "41b372a77b767f3f3105c05dc7e4976587f8da36",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDadg01Rzh3brwf\na4kYqn9wzj+lC7+Mgive8sqNgO1UOsmuebdkvmQONozd/B9VJR2YrTAdO7WnqjXC\nZO6CKvn5JrYVAOSsZdL2qIVN15NMl7g7UyLzeAwV1C3rIVRFxUNqwJjf77cWDQO8\nEYtK+jXfKsvosJRr89Shmu6F/NxfIh5Rx8P/tGqwTiKjOCmSp572OLYxk1h/5jt8\nhQEQwUoWOjyOYdjEl/rK3eIVOUo2qs1jd9j1n7i8AjyslP0p+lfwMOBcPKchpYv8\nuTQv6BoBq0KXLF426Kv66Paoin0YTJRXLw/DZTX3/3ksPVaHzbneRrKaFuyJjEl6\nXakVsdC/AgMBAAECggEACfLTUihOpX24+nNSuHlXOWNjGZiJ3hO1fL8wwzXqWOoe\nciAf3mofM1h/nMJVCPMaQHAunz4vXRXOwe4HwIzFenetVhKG12UBsPLmsy9MiXHl\nVWpJTq4aWsohVzJa3JyJn+xqadRIUaxBDcj8v2raljGkPJICCFJ/zeY404g63ugg\nyrBEQFCahyXuiq0jptp+j4wOk80/n91igyaNudgTPQhLtg3oRglBpaKzF3obcStk\nqu924r0BeZ5Ql4cl6PAu1tPRXIlGcRi9Y18aSXQAWrXEBXj9MriAdBjHSh7AiRFW\nHaiBVgxXJdsa46cdQTnAJPM2dtq4C0WdGd9jMZkeiQKBgQD3ar1Nu4LnSZOFwbo4\nm7wrtClrt8VsAeLzPWA/nVtzJCIAbJS0HlQnptdcCE89K28agCruqgNJDySupMh3\nmkPNb5byMe9MenX8wVFdDzcN2pv+md4T2+nFiLUy49G0zHWbsi0uVQN2ty8j+vFQ\nVVpmxaVLGT39APLJ5YJVtS0FlwKBgQDiCilNxdtoOz5kY0Gcu4zCpAGkS8Hg5xaX\nrDPn4y6Bt62NCDrSvN1OXjHzL5gDPdr/7g3XiSo/2B1lup9SpUci7SNT/pZaEEoQ\n1LBkyGcf5+r2V17JrDV7Y3i9ISR2I0dHpSsju1nht++IztNCQR4o4ICEMJZ3tF//\nAO+mJxCDGQKBgA+So1mqLMIcCnIH0I3Rl5V0oIrMJVv3/m3q9gzq/Z+QraczLmTr\n58YbJUEAsOQbwMF9QbaF8vD9SATKEGgeyJe8p1aVOAerSZPgIxvlYkS39sueqbC8\nTcmGIkmSt1dW6ywimd9psG8fdpMgL2IsDSWc2RuR+inbjmyQypRUdAH/AoGAW21Y\nv4hj8ojj957eDxMdIC1OLLInvVw7GyYf6I9PZFBy9jR59ntF2EjpUz/Q8J64UgRr\nvN5SJHi5i0gs4TTQzSO1wmebUNp92sjsgBc+/vzDYNh+EnyBNWNKltUs9kvWrPf1\ntwI0nMPVMzTU5luIY2hLEyzD768ZlP8/76ilWSECgYBsHP32bMNtCK9Ff1jKl6GA\nO8l4qEulizh4JHsYADTCwT1ggGU2lFMlR39RLQiPKME7HAFgKgNzaxqyx/yTHefb\nuXHbK93m+eaIAVW/QOGX7CFZwC0UOqMgk0qsQhHWxqLOAXDn7kEluLeY7jDRpJRk\nRpMuvFtl1Fwu4Q2EItoaZg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "maishacks2022@tidy-reporter-364307.iam.gserviceaccount.com",
+  "client_id": "102904710784839360664",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/maishacks2022%40tidy-reporter-364307.iam.gserviceaccount.com"
+}

@@ -1,0 +1,88 @@
+{% extends "base.html" %} {% block content %}
+
+<head>
+	<link
+		href="{{ url_for('static', filename='carousel.css') }}"
+		rel="stylesheet"
+	/>
+</head>
+
+<div class="px-3 py-4 my-4 text-center">
+	<h1 class="display-3 fw-bold">Who we are</h1>
+</div>
+
+<div class="row text-center">
+	<div class="col-lg-3">
+		<!--<svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Nathalie Redick</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>-->
+		<img
+			class="rounded-circle z-depth-2 fitting"
+			alt="10x10"
+			src="{{ url_for('static', filename='resources/nathalie.jpg')}}"
+			data-holder-rendered="true"
+		/>
+		<h2 class="pt-3">Nathalie Redick</h2>
+		<p>
+			A fourth-year undergraduate Computer Science student at McGill
+			University who is interested in computational geoscience and machine
+			learning.
+		</p>
+		<p>
+			<a
+				class="btn btn-secondary"
+				href="https://github.com/nredick"
+				target="_blank"
+				rel="noopener noreferrer"
+				>View Github &raquo;</a
+			>
+		</p>
+	</div>
+	<!-- /.col-lg-4 -->
+	<div class="col-lg-3">
+		<img
+			class="rounded-circle z-depth-2 fitting"
+			alt="10x10"
+			src="{{ url_for('static', filename='resources/leki.jpg')}}"
+			data-holder-rendered="true"
+		/>
+
+		<h2 class="pt-3">Lekima Yakuden</h2>
+		<p>
+			An undergraduate student at McGill University in the
+			Physics & Geophysics program. Lover of frogs. 
+		</p>
+		<p>
+			<a
+				class="btn btn-secondary"
+				href="https://github.com/LekiYak
+				target="_blank"
+				rel="noopener noreferrer"
+				>View Github &raquo;</a
+			>
+		</p>
+	</div>
+	<!-- /.col-lg-4 -->
+	<div class="col-lg-3">
+		<img
+			class="rounded-circle z-depth-2 fitting"
+			alt="10x10"
+			src="{{ url_for('static', filename='resources/yasha.jpg')}}"
+			data-holder-rendered="true"
+		/>
+
+		<h2 class="pt-3">Yasha Rise</h2>
+		<p>"I hate frontend"</p>
+		<p>
+			<a
+				class="btn btn-secondary"
+				href="https://github.com/Jashani
+				target="_blank"
+				rel="noopener noreferrer"
+				>View Github &raquo;</a
+			>
+		</p>
+	</div>
+
+</div>
+
+
+{% endblock %}

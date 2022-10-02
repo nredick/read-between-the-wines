@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica&display=swap');
+
+:root {
+    --accent: #7B2C24;
+    --header: #4E0901; 
+    --background: #FFE2D1; 
+    --text: #FFE2D1;
+    --text-dark: #280501;
+  }
+
+header {
+    font-family: 'IM Fell DW Pica', serif;
+    font-size: 60px;
+    background: var(--header);
+}
+
+.head {
+    background: var(--header);
+}
+
+header h2 {
+    font-size: 45px;
+    padding: 25px;
+    text-align: center;
+    color: var(--text);
+}
+
+body {
+    color: var(--text);
+    font-family: 'IM Fell DW Pica', serif;
+    background: var(--background);
+    text-align: center;
+    justify-content: center;
+}
+
+
+body {
+    background-image: url("resources/wine.jpg");
+    opacity: 0.9;
+    background-size: cover;
+    min-height: 900px;
+}
+
+.navbar {
+    background: var(--accent);
+    font-size: 22px;
+}
+
+.navbar-brand a {
+    font-size: 22px;
+}
+
+.img-link {
+    padding: 25px;
+}
+
+
+.poetry {
+    font-size: 16px;
+    padding: 25px;
+}
+
+#footer {
+    color: var(--text-dark);
+    font-size: 16px;
+    text-align: center;
+    justify-content: center; 
+}
+
+.navbar p a {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.upload {
+    text-align: center;
+    padding: 25px;
+}
+
+.btn {
+    margin: 25px;
+    padding: 5px 5px 5px 5px;
+
+}
+
+.navbar a {
+    color: var(--text);
+}
+
+#url {
+    color: var(--text);
+    text-align: center;
+    width: 30%;
+}

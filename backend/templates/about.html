@@ -1,0 +1,74 @@
+{% extends "base.html" %} {% block content %}
+<head>
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='product.css') }}" rel="stylesheet">
+</head>
+
+<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
+    <div class="col-md-5 p-lg-5 mx-auto my-5"> <!-- Add background for this div? -->
+      <h1 class="display-4 fw-normal">"So you want a drink..."</h1>
+      <p class="lead fw-normal fs-2">...but are your getting the bang for your buck?</p>
+        <p class="lead fw-normal"> This hack was created for MAIS Hacks 2022. Our project aims to help consumers make informed choices about the quality and price of wine.
+
+        Read Between the Wines is an interactive platform designed to provide users with a comfortable interface to truly understand the quality of their wine of choice.
+
+        Consequently, it allows users to further explore their options and get a deeper understanding of the no-no juice.
+
+        Users can input a wine of their choice by entering the year and the winery that produced it. The neural network then predicts the quality and price of the wine based on the climatological conditions of the growing season in which it was produced.</p>
+    </div>
+  </div>
+
+<!-- <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
+    <div class="bg-success me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center test-body overflow-hidden">
+      <div class="my-3 pt-3">
+        <h2 class="display-5">1. MAISpeare leverages Google's Vision API to label images</h2>
+        <p class="lead">...creating a list of keywords as our "poem prompt."</p>
+      </div>
+      <div class="shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+          <img src = "https://i2.wp.com/blogs.embarcadero.com/wp-content/uploads/2021/05/mallorca-3082686.jpg?resize=750%2C549&ssl=1" class = "fitt image-fluid rounded">
+      </div>
+    </div>
+    <div class="bg-dark me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-light overflow-hidden">
+      <div class="my-3 pt-3">
+        <h2 class="display-5">2. MAISpeare then uses our own LSTM ML model to write poetry! </h2>
+        <a class="lead" href = "https://github.com/nredick/readbetweenthewines" target="_blank" rel="noopener noreferrer">See the source code here!</a>
+      </div>
+      <div class="shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+          <img src = "https://smartcdn.prod.postmedia.digital/theprovince/wp-content/uploads/2017/04/poetrywordcloud.jpg" class = "fitt image-fluid rounded">
+      </div>
+    </div>
+  </div> -->
+
+
+
+<div class="px-4 py-5 my-5 text-center">
+    <!-- <img class="d-block mx-auto mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
+    <h1 class="display-5 fw-bold">So what are you waiting for?</h1>
+    <div class="col-lg-6 mx-auto">
+    <p class="lead mb-4">What is your wine worth?</p>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <a class="btn btn-success btn-lg px-4 gap-3" href="{{ url_for('main') }}">Show me!</a>
+        <a class="btn btn-outline-success btn-lg px-4" href="{{ url_for('team') }}">What geniuses designed this?</a>
+        <!-- 2nd button is a little hard to see -->
+    </div>
+    </div>
+</div>
+
+
+{% endblock %}
